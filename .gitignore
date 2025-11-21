@@ -205,3 +205,97 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+
+# -----------------------------
+# VIRTUAL ENV
+# -----------------------------
+venv/
+env/
+.venv/
+
+
+# -----------------------------
+# PYTHON BASE IGNORE
+# -----------------------------
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pdb
+*.pkl
+*.p
+*.db
+
+# -----------------------------
+# VIRTUAL ENV
+# -----------------------------
+venv/
+env/
+.venv/
+
+# -----------------------------
+# RAG / VECTOR INDEX
+# -----------------------------
+data/*.pkl
+data/*.npy
+data/*.npz
+data/*.pt
+data/*.bin
+data/*.h5
+
+# Orijinal dokümanları da commit'e dahil etme:
+data/document.txt
+data/*.txt
+
+# -----------------------------
+# API KEYS / PRIVATE CONFIGS
+# -----------------------------
+secret/
+secret.json
+*.key
+*api_key*
+*.env
+.env
+config/secrets.py
+
+# -----------------------------
+# LOGS
+# -----------------------------
+logs/
+*.log
+*.debug
+*.bak
+
+# -----------------------------
+# CACHE
+# -----------------------------
+.cache/
+*.cache
+build/
+dist/
+pip-wheel-metadata/
+*.egg-info/
+
+# -----------------------------
+# NLTK / MODEL DOWNLOADS
+# -----------------------------
+nltk_data/
+company_rag/nltk_data/
+*.pickle
+
+# -----------------------------
+# FASTAPI STATIC CACHE
+# -----------------------------
+static/.cache/
+static/uploads/
+static/*.tmp
+
+# -----------------------------
+# OS / EDITOR FILES
+# -----------------------------
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
