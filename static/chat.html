@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Chat - RAG Asistanı</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background: #f5f5f5;
+        font-family: Arial, sans-serif;
+      }
+
+      /* KÜÇÜK CHAT PENCERESİ (floating widget) */
+      #chat-wrapper {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 350px;
+        height: 480px;
+        background: white;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        border-radius: 14px;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      #chat-header {
+        background: #007bff;
+        color: white;
+        padding: 14px;
+        font-size: 16px;
+        font-weight: bold;
+        text-align: center;
+      }
+
+      #chat-container {
+        flex: 1;
+        padding: 12px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        background: #f9f9f9;
+      }
+
+      .msg {
+        max-width: 75%;
+        padding: 10px 14px;
+        border-radius: 10px;
+        font-size: 14px;
+        line-height: 1.4;
+      }
+
+      .user {
+        background: #007bff;
+        color: white;
+        align-self: flex-end;
+      }
+
+      .bot {
+        background: #ffffff;
+        border: 1px solid #ddd;
+        align-self: flex-start;
+      }
+
+      #input-area {
+        display: flex;
+        padding: 10px;
+        background: #ffffff;
+        border-top: 1px solid #ddd;
+      }
+
+      #question {
+        flex: 1;
+        padding: 8px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        margin-right: 8px;
+      }
+
+      #send-btn {
+        padding: 8px 14px;
+        font-size: 14px;
+        background: #28a745;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+
+      #send-btn:hover {
+        background: #218838;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="chat-wrapper">
+      <div id="chat-header">📞 RAG Destek Asistanı</div>
+
+      <div id="chat-container"></div>
+
+      <div id="input-area">
+        <input id="question" type="text" placeholder="Mesaj yazın..." />
+        <button id="send-btn">Gönder</button>
+      </div>
+    </div>
+
+    <script>
+      function addMessage(text, type) {
+        const container = document.getElementById("chat-container");
+        const div = document.createElement("div");
+        div.className = `msg ${type}`;
+        div.textContent = text;
+        container.appendChild(div);
+        container.scrollTop = container.scrollHeight;
+      }
+
+      async function sendMessage() {
+        const input = document.getElementById("question");
+        const message = input.value.trim();
+        if (!message) return;
+
+        addMessage(message, "user");
+        input.value = "";
+
+        const response = await fetch("/ask", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ question: message }),
+        });
+
+        const data = await response.json();
+        addMessage(data.answer, "bot");
+      }
+
+      /* Enter tuşu */
+      document.getElementById("question").addEventListener("keypress", (e) => {
+        if (e.key === "Enter") sendMessage();
+      });
+
+      /* Gönder butonu */
+      document
+        .getElementById("send-btn")
+        .addEventListener("click", sendMessage);
+
+      /* SAYFA AÇILDIĞINDA OTOMATİK MESAJ */
+      window.onload = () => {
+        addMessage(
+          "Merhaba! 👋 Ben şirket içi doküman asistanınızım. Sormak istediğiniz bilgiyi yazabilirsiniz.",
+          "bot"
+        );
+      };
+    </script>
+  </body>
+</html>
